@@ -1,0 +1,348 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>humans behind keyboards</title>
+		<meta property="og:title" content="humans behind keyboards" />
+		<meta property="og:description" content="Initialize the sampling of humans behind keyboards with a word of your choice." />
+		<meta property="og:url" content="http://s.ndre.gr/humans/" />
+		<link href='http://fonts.googleapis.com/css?family=Inconsolata&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+		<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+		<script src="velocity.min.js"></script>
+		<script type="text/javascript" src="mespeak/mespeak.js"></script>
+		<script type="text/javascript">
+			meSpeak.loadConfig("mespeak/mespeak_config.json");
+			loadVoice("en-us");
+			var available_languages	= [
+				'ca', 'cs', 'de', 'el', 'eo', 'es', 'es-la', 'fi', 'fr', 'hu', 'it', 'kn', 'la', 'lv', 'nl',
+				'pl', 'pt', 'pt-pt', 'ro', 'sk', 'sv', 'tr', 'zh', 'zh-yue'
+			]
+			var locales = window.navigator.languages || [window.navigator.language || window.navigator.userLanguage]
+			var voice = 'en-us';
+			jQuery.each(locales, function(i, locale) {
+				locale = locale.toLowerCase();
+				if (jQuery.inArray(locale, available_languages) > -1) {
+					voice = locale;
+					loadVoice(locale);
+					return false;
+				}
+				locale = locale.split('-')[0];
+				if (jQuery.inArray(locale, available_languages) > -1) {
+					voice = locale;
+					loadVoice(locale);
+					return false;
+				}
+			});
+			
+			function loadVoice(id) {
+			  var fname="mespeak/voices/"+id+".json";
+			  meSpeak.loadVoice(fname); // can take a second param with success callback
+			}
+			
+		</script>
+		<style>
+			body {
+				height: 100%;
+				padding: 0;
+				margin: 0;
+				background-color: #222222;
+				font-family: 'Inconsolata', Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
+			}
+			span {
+				position: absolute;
+				display: block;
+				height: 1.5em;
+				text-align: right;
+				color: #222222;
+				text-shadow: 3em 3em 1em #FFFFFF, 0 0 10em #FFFFFF;
+				cursor: pointer;
+				transition: color 0.5s, text-shadow 0.5s;
+				-moz-user-select: none;
+				-webkit-user-select: none;
+				-ms-user-select: none;
+				-o-user-select: none;
+				user-select: none;
+			}
+			#start {
+				width: 50%;
+				margin: 0 auto;
+				display: none;
+				font-size: 28px;
+				background-color: #CCC;
+				padding: 20px;
+				margin-top: 50px;
+			}
+			#start input {
+				font-size: 36px;
+			}
+			#start button {
+				font-size: 24px;
+				padding: 5px;
+				font-family: inherit;
+				cursor: pointer;
+			}
+			.what {
+				display: inline-block;
+				background-color: #999;
+				padding: 5px 10px;
+				cursor: pointer;
+				font-size: 14px;
+			}
+			.what:hover {
+				color: SpringGreen;
+			}
+			form {
+				margin: 0;
+			}
+			p {
+				margin-top: 0;
+			}
+			.about {
+				display: none;
+				padding: 20px 0;
+				font-size: 14px;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div id="start">
+			<p>
+				Initialize the sampling of humans behind keyboards with a word of your choice.
+			</p>
+			<form>
+				<input required autofocus /><br/><br/>
+				<button>Sample</button>
+				<a class="what">?</a>
+				<div class="about">
+					idea &amp; crappy code : <a href="https://twitter.com/ilesinge">@ilesinge</a><br/>
+					seed suggestion : wordnik<br/>
+					sampling of humans : google<br/>
+					re-humanization : meSpeak.js<br/>
+					stimulation : jquery &amp; velocityjs
+				</div>
+			</form>
+		</div>
+		
+		<script type="text/javascript">
+			
+			/*window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                              window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;*/
+
+			var Paper = {
+				
+				//whitelist : ['de', 'en', 'le', 'du', 'la'],
+				
+				basetext : '',
+				
+				surface : $('body'),
+				
+				last_one : false,
+				
+				max_stains : 10,
+				
+				stains : [],
+				
+				used_words : [],
+				
+				width : null,
+				
+				init : function() {
+					this.width = this.surface.width();
+					this.basetext_letters = Paper.basetext.split('');
+				},
+				
+				pos : function() {
+					return Math.random()*(Paper.width-100)+'px';
+				},
+				
+				perc : function() {
+					return Math.random()*95+'%';
+				},
+				
+				col : function() {
+					return '#'+Math.floor(Math.random()*16777215).toString(16);
+				},
+				
+				/*move : function() {
+					$(Paper.stains).each(function(index, stain){
+						stain.move();
+					});
+					requestAnimationFrame(Paper.move);
+					//setTimeout(Paper.move, 50);
+				},*/
+				
+				generate : function() {
+					var ink = new Paper.Ink;
+					Paper.stains.push(ink.spill());
+					if (Paper.stains.length > Paper.max_stains) {
+						var diff = Paper.stains.length - Paper.max_stains;
+						for (var i = 0; i < diff; i++) {
+							Paper.stains[i].clean();
+						}
+					}
+					setTimeout(Paper.generate, 1000);
+				},
+				
+				Ink : function() {
+					
+					this.stain = null;
+
+					this.highness = 1 - Math.random();
+					
+					this.spill = function(nonew) {
+						var word = Paper.text(false, nonew);
+						//console.log('speak '+word);
+						try {
+							loadVoice(voice);
+							setTimeout(function(highness){
+								meSpeak.speak(word, {
+								  amplitude: 100,
+								  wordgap: 0,
+								  pitch: 25 + (highness * 50),
+								  speed: 90 + (highness * 180),
+								  variant: ''
+								});
+							}, 0, this.highness);
+						}
+						catch (e) {}
+						var right = Paper.pos();
+						this.stain = $('<span>'+word+'</span>')
+							.css('right', right)
+							.css('bottom', Paper.perc())
+							.css('font-size', this.highness*24+24)
+							.css('opacity', 0)
+							.appendTo(Paper.surface)
+							.velocity({'right': parseFloat(25 * 25 * this.highness) + 15 * 15 + parseFloat(right.split('px')[0])}, { queue: false, duration: 15000, easing: "linear"})
+							.velocity({'textShadowBlur': '0'}, { queue: false, duration: 250})
+							.velocity({'opacity': this.highness*0.7+0.3}, 500)
+							.velocity({'color': '#DDBBBB'}, { queue: false, duration: 250});
+
+						return this;
+					};
+					
+					this.clean = function() {
+						this.stain.velocity({'opacity': 0}, 1000, function(){
+							$(this).remove();
+							Paper.stains.shift();
+						});
+					};
+					
+					this.move = function() {
+						/*var right = this.stain.css('right').split('px')[0];
+						this.stain.css('right', parseFloat(right)+this.highness*3);*/
+					}
+				},
+				
+				text: function(one, nonew) {
+					Paper.last_one = one;
+					var search_expr = Paper.last_word(1);
+					if (!one && typeof Paper.last_word(2) != 'undefined') {
+						search_expr = Paper.last_word(2)+'%20'+search_expr;
+					}
+					if (!one && typeof Paper.last_word(3) != 'undefined') {
+						search_expr = Paper.last_word(3)+'%20'+search_expr;
+					}
+					//console.log('searched: '+search_expr);
+					
+					if (!nonew) {
+						var tag = '<script src="http://suggestqueries.google.com/complete/search?client=chrome&q='+search_expr+'%20&callback=Paper.suggest">\<\/script\>';
+						$('body').append(tag);
+					}
+					var word = Paper.last_word(1);
+					return word;
+				},
+				
+				autorized: function(word) {
+					var free = jQuery.inArray(word, Paper.used_words) == -1;
+					//free = free || (jQuery.inArray(word, Paper.whitelist) > -1 && Paper.last_word(1) !== word && Paper.last_word(2) !== word);
+					free = free && typeof word != 'undefined' && word.indexOf('http') !== 0;
+					return free;
+				},
+				
+				suggest: function(data) {
+					// Error cases :
+					var suggestions = data[1];
+					//var suggestions = data;
+					var suggestion = suggestions[1];
+					// 1. There is no suggestion
+					if (!suggestion) {
+						if (!Paper.last_one)
+						{
+							Paper.text(true);
+						}
+					}
+					else {
+						//console.log(suggestions);
+						var found = false;
+						for (j = 0; j < suggestions.length; j++) {
+							words = suggestions[j].split(' ');
+							for (i = 0; i < words.length; i++) {
+								word = words[i];
+								//console.log('tried: '+word);
+								if (Paper.autorized(word)) {
+									found = true;
+									break;
+								}
+							}
+							if (found) {
+								break;
+							}
+						}
+						//console.log('used: '+word);
+						//console.log(Paper.used_words);
+						Paper.used_words.push(word);
+					}
+				},
+				
+				last_word: function(index) {
+					return Paper.used_words[Paper.used_words.length-index];
+				}
+			}
+			
+			var hover_color = 'SpringGreen';
+			var style = $('<style>span:hover { color: '+hover_color+' !important; text-shadow: 3em 3em 1.5em '+hover_color+'; }</style>');
+			$('html > head').append(style);
+			
+			$(window).on('hashchange', function(){
+				var query = window.location.hash.split('#');
+				if (query[1]) {
+					Paper.used_words.push(query[1]);
+				}
+			});
+			
+			Paper.init();
+			
+			var wordnik_url = "http://api.wordnik.com/v4/words.json/randomWords?hasDictionaryDef=true&minCorpusCount=100000&maxCorpusCount=10000000&limit=1&excludePartOfSpeech=family-name&api_key=89ea2b190a92226ed80010dd7500626f7af1db0af465d843b"
+			$.get(wordnik_url, function(data){
+				var text = data[0]['word'].toLowerCase();
+				$('input').val(text);
+			});
+			$('#start').show();
+			
+			$("form").submit(function(e){
+				var first_word = $('input').val();
+				if (!first_word) {
+					first_word = 'life';
+				}
+				Paper.used_words[0] = first_word;
+				$('#start').hide();
+				
+				Paper.generate();
+				//Paper.move();
+				e.preventDefault();
+			});
+			
+			$(document).on("click", "span", function() {
+				var text = $(this).text();
+				Paper.used_words.push(text);
+				var ink = new Paper.Ink;
+				Paper.stains.push(ink.spill(true));
+			});
+			$('.what').click(function(){
+				$('.about').toggle();
+			});
+		</script>
+		
+
+	</body>
+</html>
