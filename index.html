@@ -8,13 +8,13 @@
 		<link href='http://fonts.googleapis.com/css?family=Inconsolata&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 		<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
 		<script src="velocity.min.js"></script>
-		<script type="text/javascript" src="mespeak/mespeak.js"></script>
 		<script type="text/javascript">
-			meSpeak.loadConfig("mespeak/mespeak_config.json");
-			loadVoice("en-us");
 			var available_languages	= [
-				'ca', 'cs', 'de', 'el', 'eo', 'es', 'es-la', 'fi', 'fr', 'hu', 'it', 'kn', 'la', 'lv', 'nl',
-				'pl', 'pt', 'pt-pt', 'ro', 'sk', 'sv', 'tr', 'zh', 'zh-yue'
+				'af', 'bs', 'ca', 'cs', 'cy', 'da', 'de', 'el', 'en', 'en-sc',
+				'en-uk', 'en-us', 'en-wi', 'eo', 'es', 'es-la', 'fi', 'fr',
+				'fr-be', 'hi', 'hr', 'hu', 'hy', 'id', 'is', 'it', 'kn', 'ku',
+				'la', 'lv', 'mk', 'nl', 'no', 'pl', 'pt', 'pt-pt', 'ro', 'ru',
+				'sk', 'sq', 'sr', 'sv', 'sw', 'ta', 'tr', 'vi', 'zh', 'zh-yue'
 			]
 			var locales = window.navigator.languages || [window.navigator.language || window.navigator.userLanguage]
 			var voice = 'en-us';
@@ -22,22 +22,14 @@
 				locale = locale.toLowerCase();
 				if (jQuery.inArray(locale, available_languages) > -1) {
 					voice = locale;
-					loadVoice(locale);
 					return false;
 				}
 				locale = locale.split('-')[0];
 				if (jQuery.inArray(locale, available_languages) > -1) {
 					voice = locale;
-					loadVoice(locale);
 					return false;
 				}
 			});
-			
-			function loadVoice(id) {
-			  var fname="mespeak/voices/"+id+".json";
-			  meSpeak.loadVoice(fname); // can take a second param with success callback
-			}
-			
 		</script>
 		<style>
 			body {
@@ -193,15 +185,10 @@
 						var word = Paper.text(false, nonew);
 						//console.log('speak '+word);
 						try {
-							loadVoice(voice);
 							setTimeout(function(highness){
-								meSpeak.speak(word, {
-								  amplitude: 100,
-								  wordgap: 0,
-								  pitch: 25 + (highness * 50),
-								  speed: 90 + (highness * 180),
-								  variant: ''
-								});
+								pitch = 25 + (highness * 50);
+								speed = 90 + (highness * 180);
+								new Audio('voice.php?voice='+voice+'&pitch='+pitch+'&speed='+speed+'&text='+word).play();
 							}, 0, this.highness);
 						}
 						catch (e) {}
