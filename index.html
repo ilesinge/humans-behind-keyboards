@@ -250,7 +250,6 @@
 				
 				autorized: function(word) {
 					var free = jQuery.inArray(word, Paper.used_words) == -1;
-					//free = free || (jQuery.inArray(word, Paper.whitelist) > -1 && Paper.last_word(1) !== word && Paper.last_word(2) !== word);
 					free = free && typeof word != 'undefined' && word.indexOf('http') !== 0;
 					return free;
 				},
