@@ -288,24 +288,39 @@
 			
 			Paper.init();
 			
-			var wordnik_url = "http://api.wordnik.com/v4/words.json/randomWords?hasDictionaryDef=true&minCorpusCount=100000&maxCorpusCount=10000000&limit=1&excludePartOfSpeech=family-name&api_key=89ea2b190a92226ed80010dd7500626f7af1db0af465d843b"
-			$.get(wordnik_url, function(data){
-				var text = data[0]['word'].toLowerCase();
-				$('input').val(text);
-			});
-			$('#start').show();
-			
 			$("form").submit(function(e){
 				var first_word = $('input').val();
 				if (!first_word) {
 					first_word = 'life';
 				}
+				window.location.hash = first_word;
 				Paper.used_words[0] = first_word;
 				$('#start').hide();
 				
 				Paper.generate();
 				e.preventDefault();
 			});
+			
+			if (window.location.hash) {
+				var hash = window.location.hash.substring(1);
+				if (hash.substring(0, 2) == 'd=') {
+					hash = hash.substring(2);
+					$('input').val(hash);
+					$("form").submit();
+				}
+				else {
+					$('input').val(hash);
+					$('#start').show();
+				}
+			}
+			else {
+				var wordnik_url = "http://api.wordnik.com/v4/words.json/randomWords?hasDictionaryDef=true&minCorpusCount=100000&maxCorpusCount=10000000&limit=1&excludePartOfSpeech=family-name&api_key=89ea2b190a92226ed80010dd7500626f7af1db0af465d843b"
+				$.get(wordnik_url, function(data){
+					var text = data[0]['word'].toLowerCase();
+					$('input').val(text);
+				});
+				$('#start').show();
+			}
 			
 			$(document).on("click", "span", function() {
 				var text = $(this).text();
