@@ -30,7 +30,7 @@ $filepath = $base_dir . 'v' . $voice . 's' . $speed . 'p' . $pitch .
     'a' . $volume . 't' . $filename;
 
 $text = escapeshellarg($text);
-$cmd = "espeak -v $voice -s $speed -p $pitch -a $volume --stdout $text |\
+$cmd = "espeak -v $voice -s $speed -p $pitch -a $volume --stdout $text --punct=.,:/|\
 lame --preset voice -q 9 --vbr-new - $filepath";
 exec($cmd);
 
