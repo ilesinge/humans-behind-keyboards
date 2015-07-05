@@ -182,7 +182,8 @@
 						}
 						catch (e) {}
 						var right = Paper.pos();
-						this.stain = $('<span>'+word+'</span>')
+						this.stain = $('<span></span>')
+							.text(word)
 							.css('right', right)
 							.css('bottom', Paper.perc())
 							.css('font-size', this.highness*24+24)

@@ -4,6 +4,9 @@ $base_dir = __DIR__."/voice-cache/";
 
 // get input parameters
 $text = $_GET['text'];
+if (strlen($text) > 100) {
+    $text = "";
+}
 
 if (isset($_GET['voice'])) {
   $voice = $_GET['voice'];
