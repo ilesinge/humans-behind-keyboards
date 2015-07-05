@@ -116,9 +116,6 @@
 		</div>
 		
 		<script type="text/javascript">
-			
-			/*window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
-                              window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;*/
 
 			var Paper = {
 				
@@ -154,14 +151,6 @@
 				col : function() {
 					return '#'+Math.floor(Math.random()*16777215).toString(16);
 				},
-				
-				/*move : function() {
-					$(Paper.stains).each(function(index, stain){
-						stain.move();
-					});
-					requestAnimationFrame(Paper.move);
-					//setTimeout(Paper.move, 50);
-				},*/
 				
 				generate : function() {
 					var ink = new Paper.Ink;
@@ -214,10 +203,6 @@
 						});
 					};
 					
-					this.move = function() {
-						/*var right = this.stain.css('right').split('px')[0];
-						this.stain.css('right', parseFloat(right)+this.highness*3);*/
-					}
 				},
 				
 				text: function(one, nonew) {
@@ -315,7 +300,6 @@
 				$('#start').hide();
 				
 				Paper.generate();
-				//Paper.move();
 				e.preventDefault();
 			});
 			
