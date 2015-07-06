@@ -1,6 +1,6 @@
 <?php
 
-$base_dir = __DIR__."/voice-cache/";
+$base_dir = "/tmp/";
 
 // get input parameters
 $text = $_GET['text'];
