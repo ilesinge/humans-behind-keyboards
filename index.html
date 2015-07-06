@@ -130,7 +130,8 @@
 						</li>
 						<li>
 							direct link to seed with #d=yourseed as the URL hash:
-							<a href="http://humans.ndre.gr/#d=human behind keyboard">example</a>
+							<a href="http://humans.ndre.gr/#d=humans behind keyboards">example</a><br/>
+							use #d=yourseed&amp;b=1 to add bugs to the sample
 						</li>
 						<li>
 							open as many tabs as possible and enjoy the noise (may temporarily break the toy)
@@ -342,7 +343,12 @@
 				var hash = window.location.hash.substring(1);
 				if (hash.substring(0, 2) == 'd=') {
 					hash = hash.substring(2);
-					$('input').val(hash);
+					hash = hash.split('&b=');
+					word = hash[0];
+					if (hash[1]) {
+						$('#bugs').prop( "checked", true );
+					}
+					$('#word').val(word);
 					$("form").submit();
 				}
 				else {
