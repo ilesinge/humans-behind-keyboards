@@ -6,8 +6,9 @@
 		<meta property="og:description" content="Initialize the sampling of humans behind keyboards with a word of your choice." />
 		<meta property="og:url" content="http://s.ndre.gr/humans/" />
 		<link href='http://fonts.googleapis.com/css?family=Inconsolata&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-		<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+		<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 		<script src="velocity.min.js"></script>
+		<script src="flocking-no-jquery.min.js"></script>
 		<script type="text/javascript">
 			var available_languages	= [
 				'af', 'bs', 'ca', 'cs', 'cy', 'da', 'de', 'el', 'en', 'en-sc',
@@ -64,10 +65,18 @@
 				padding: 20px;
 				margin-top: 50px;
 			}
-			#start input {
+			#start input[type=text] {
 				font-size: 36px;
 				width: 60%;
 				min-width: 240px;
+			}
+			input[type=checkbox] {
+				width: 20px;
+				height: 20px;
+			}
+			label {
+				padding-left: 10px;
+				font-size: 22px;
 			}
 			#start button {
 				font-size: 24px;
@@ -105,7 +114,8 @@
 				Initialize the sampling of humans behind keyboards with a word of your choice.
 			</p>
 			<form>
-				<input required autofocus /><br/><br/>
+				<input type="text" id="word" required autofocus /><br/><br/>
+				<input type="checkbox" id="bugs"/><label for="bugs">more bugs</label><br/><br/>
 				<button>Sample</button>
 				<a class="what">?</a>
 				<div class="about">
@@ -134,12 +144,12 @@
 					sampling of humans: google<br/>
 					re-humanization: espeak<br/>
 					stimulation: jquery &amp; velocityjs
+					sound effectz: flockingjs
 				</div>
 			</form>
 		</div>
 		
 		<script type="text/javascript">
-
 			var Paper = {
 				
 				//whitelist : ['de', 'en', 'le', 'du', 'la'],
@@ -200,7 +210,9 @@
 							setTimeout(function(highness){
 								pitch = 25 + (highness * 50);
 								speed = 90 + (highness * 180);
-								new Audio('voice.php?voice='+voice+'&pitch='+pitch+'&speed='+speed+'&text='+word).play();
+								var url = 'voice.php?voice='+voice+'&pitch='+pitch+'&speed='+speed+'&text='+word;
+								new Audio(url).play();
+								play(url);
 							}, 0, this.highness);
 						}
 						catch (e) {}
@@ -308,7 +320,12 @@
 			Paper.init();
 			
 			$("form").submit(function(e){
-				var first_word = $('input').val();
+				var first_word = $('#word').val();
+				window.bugs = $('#bugs').is(':checked');
+				if (window.bugs) {
+					var enviro = flock.init();
+					enviro.start();
+				}
 				if (!first_word) {
 					first_word = 'life';
 				}
@@ -339,6 +356,32 @@
 					$('input').val(text);
 				});
 				$('#start').show();
+			}
+			
+			function play(url) {
+				if (window.bugs) {
+					if (window.synth) {
+						window.oldsynth = window.synth;
+						setTimeout('window.oldsynth.destroy()', 200);
+					}
+					window.synth = flock.synth({
+						synthDef: {
+						    ugen: "flock.ugen.granulator",
+						    delayDur: 0.1,
+						    numGrains: 50,
+						    source: {
+						        ugen: "flock.ugen.playBuffer",
+						        buffer: {
+						            id: "text",
+						            url: url
+						        },
+						        loop: 1,
+						        start: 0,
+						        mul: 1.8,
+						    }
+						}
+					});
+				}
 			}
 			
 			$(document).on("click", "span", function() {
