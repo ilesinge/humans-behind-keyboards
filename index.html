@@ -367,11 +367,6 @@
 				}
 			}
 			else {
-				var wordnik_url = "http://api.wordnik.com/v4/words.json/randomWords?hasDictionaryDef=true&minCorpusCount=100000&maxCorpusCount=10000000&limit=1&excludePartOfSpeech=family-name&api_key=89ea2b190a92226ed80010dd7500626f7af1db0af465d843b"
-				$.get(wordnik_url, function(data){
-					var text = data[0]['word'].toLowerCase();
-					$('input').val(text);
-				});
 				$('#start').show();
 			}
 			

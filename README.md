@@ -18,8 +18,7 @@ tricks:
 - drop files in web folder (with php enabled)
 
 ## credits
-- seed suggestion: [wordnik](https://www.wordnik.com/)
 - sampling of humans: [google](https://support.google.com/websearch/answer/106230?hl=en)
 - re-humanization: [espeak](https://github.com/rhdunn/espeak)
 - stimulation: [jquery](https://jquery.com) & [velocity.js](http://julian.com/research/velocity/)
-- sound effectz: [flocking.js](http://flockingjs.org/)
+- sound effects: [flocking.js](http://flockingjs.org/)
