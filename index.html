@@ -375,25 +375,29 @@
 				if (window.bugs) {
 					if (window.synth) {
 						window.oldsynth = window.synth;
-						setTimeout('window.oldsynth.destroy()', 200);
+						setTimeout('if (typeof(window.oldsynth.destroy) == "function") window.oldsynth.destroy()', 200);
 					}
-					window.synth = flock.synth({
-						synthDef: {
-						    ugen: "flock.ugen.granulator",
-						    delayDur: 0.1,
-						    numGrains: 50,
-						    source: {
-						        ugen: "flock.ugen.playBuffer",
-						        buffer: {
-						            id: "text",
-						            url: url
-						        },
-						        loop: 1,
-						        start: 0,
-						        mul: 1.8,
-						    }
-						}
-					});
+					try {
+						window.synth = flock.synth({
+							synthDef: {
+							    ugen: "flock.ugen.granulator",
+							    delayDur: 0.1,
+							    numGrains: 50,
+							    source: {
+							        ugen: "flock.ugen.playBuffer",
+							        buffer: {
+							            id: Math.random().toString(36).substring(7),
+							            url: url
+							        },
+							        loop: 1,
+							        start: 0,
+							        mul: 1.8,
+							    }
+							}
+						});
+					} catch(e) {
+						// sad computer :(
+					}
 				}
 			}
 			
