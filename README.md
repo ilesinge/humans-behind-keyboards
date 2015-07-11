@@ -3,6 +3,8 @@
 
 initialize the sampling of humans behind keyboards with a word of your choice.
 
+![Screenshot](http://humans.ndre.gr/screen.png)
+
 tricks:
 - click on words
 - play with the hash in the URL
