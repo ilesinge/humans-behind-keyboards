@@ -220,8 +220,8 @@
 						//console.log('speak '+word);
 						try {
 							setTimeout(function(highness){
-								pitch = 25 + (highness * 50);
-								speed = 90 + (highness * 180);
+								pitch = Math.round(25 + (highness * 50));
+								speed = Math.round(90 + (highness * 180));
 								var url = 'voice.php?voice='+voice+'&pitch='+pitch+'&speed='+speed+'&text='+word;
 								new Audio(url).play();
 								play(url);
