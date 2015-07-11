@@ -383,14 +383,14 @@
 				if (window.bugs) {
 					if (window.synth) {
 						window.oldsynth = window.synth;
-						setTimeout('if (typeof(window.oldsynth.destroy) == "function") window.oldsynth.destroy()', 200);
+						setTimeout('if (typeof(window.oldsynth.destroy) == "function") window.oldsynth.destroy()', 400);
 					}
 					try {
 						window.synth = flock.synth({
 							synthDef: {
 							    ugen: "flock.ugen.granulator",
-							    delayDur: 0.1,
-							    numGrains: 50,
+							    delayDur: 0.5,
+							    numGrains: 40,
 							    source: {
 							        ugen: "flock.ugen.playBuffer",
 							        buffer: {
