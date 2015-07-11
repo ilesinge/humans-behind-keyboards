@@ -6,7 +6,7 @@ initialize the sampling of humans behind keyboards with a word of your choice.
 tricks:
 - click on words
 - play with the hash in the URL
-- direct link to seed with #d=yourseed as the URL hash: http://humans.ndre.gr/#d=human behind keyboard
+- direct link to seed with #d=yourseed as the URL hash: http://humans.ndre.gr/#d=human+behind+keyboard
 - open as many tabs as possible and enjoy the noise (may temporarily break the toy)
 - ???
 
@@ -16,7 +16,8 @@ tricks:
 - drop files in web folder (with php enabled)
 
 ## credits
-- seed suggestion: wordnik
-- sampling of humans: google
+- seed suggestion: [wordnik](https://www.wordnik.com/)
+- sampling of humans: [google](https://support.google.com/websearch/answer/106230?hl=en)
 - re-humanization: espeak
-- stimulation: jquery & velocityjs
+- stimulation: [jquery](https://jquery.com) & [velocity.js](http://julian.com/research/velocity/)
+- sound effectz: [flocking.js](http://flockingjs.org/)
