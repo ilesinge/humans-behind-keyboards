@@ -128,8 +128,8 @@
 				initialize the sampling of <i>humans behind keyboards</i> with a word of your choice
 			</p>
 			<form>
-				<input type="text" id="word" required autofocus /><br/><br/>
-				<input type="checkbox" id="bugs"/><label for="bugs">more bugs</label><br/><br/>
+				<input type="text" id="word" placeholder="seed" required autofocus /><br/><br/>
+				<input type="checkbox" id="bugs" checked /><label for="bugs">more bugs</label><br/><br/>
 				<button>sample</button>
 				<a class="what">?</a>
 				<div class="about">
@@ -143,8 +143,12 @@
 						</li>
 						<li>
 							direct link to seed with #d=yourseed as the URL hash:
-							<a href="http://humans.ndre.gr/#d=humans behind keyboards">example</a><br/>
-							use #d=yourseed&amp;b=1 to add bugs to the sample
+							<a href="http://humans.ndre.gr/#d=humans behind keyboards">example</a>
+							<ul>
+								<li>
+									use #d=yourseed&amp;b=0 to disable additional bugs
+								</li>
+							</ul>
 						</li>
 						<li>
 							open as many tabs as possible and enjoy the noise (may temporarily break the toy)
@@ -355,8 +359,8 @@
 					hash = hash.substring(2);
 					hash = hash.split('&b=');
 					word = hash[0];
-					if (hash[1]) {
-						$('#bugs').prop( "checked", true );
+					if (hash[1] == "0") {
+						$('#bugs').attr('checked', false);
 					}
 					$('#word').val(word);
 					$("form").submit();
