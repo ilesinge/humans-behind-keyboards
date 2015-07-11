@@ -62,6 +62,10 @@
 				-o-user-select: none;
 				user-select: none;
 			}
+			span:hover {
+				color: SpringGreen !important;
+				text-shadow: 3em 3em 1.5em SpringGreen;
+			}
 			#start {
 				width: 50%;
 				min-width: 280px;
@@ -326,10 +330,6 @@
 					return Paper.used_words[Paper.used_words.length-index];
 				}
 			}
-			
-			var hover_color = 'SpringGreen';
-			var style = $('<style>span:hover { color: '+hover_color+' !important; text-shadow: 3em 3em 1.5em '+hover_color+'; }</style>');
-			$('html > head').append(style);
 			
 			$(window).on('hashchange', function(){
 				var query = window.location.hash.split('#');
