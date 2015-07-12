@@ -161,8 +161,8 @@
 								</li>
 								<li>
 									some compositions:
-									<a href="http://humans.ndre.gr/#d=oooooooooooooooooooooooooooooooooooooooooo.jpg">ooo.jpg</a>,
-									<a href="http://humans.ndre.gr/#d=eeeeeeeeeeeee+eeeeeeeeeeeeeeee+eeee">eee+eee</a>
+									<a rel="compo" href="#d=oooooooooooooooooooooooooooooooooooooooooo.jpg">ooo.jpg</a>,
+									<a rel="compo" href="#d=eeeeeeeeeeeee+eeeeeeeeeeeeeeee+eeee">eee+eee</a>
 								</li>
 							</ul>
 						</li>
@@ -183,6 +183,8 @@
 		
 		<script type="text/javascript">
 			var Paper = {
+				
+				has_started : false,
 				
 				basetext : '',
 				
@@ -216,6 +218,7 @@
 				},
 				
 				generate : function() {
+					Paper.has_started = true;
 					var ink = new Paper.Ink;
 					Paper.stains.push(ink.spill());
 					if (Paper.stains.length > Paper.max_stains) {
@@ -337,11 +340,13 @@
 			}
 			
 			$(window).on('hashchange', function(){
-				var query = window.location.hash.split('#');
-				if (query[1]) {
-					Paper.used_words.push(query[1]);
-					var ink = new Paper.Ink;
-					Paper.stains.push(ink.spill(true));
+				if (Paper.has_started) {
+					var query = window.location.hash.split('#');
+					if (query[1]) {
+						Paper.used_words.push(query[1]);
+						var ink = new Paper.Ink;
+						Paper.stains.push(ink.spill(true));
+					}
 				}
 			});
 			
@@ -435,6 +440,12 @@
 			});
 			$('.what').click(function(){
 				$('.about').toggle();
+			});
+			$('a[rel=compo]').click(function(e){
+				window.location.href = this.href;
+				//alert(this.href);
+				window.location.reload();
+				e.preventDefault();
 			});
 		</script>
 		
