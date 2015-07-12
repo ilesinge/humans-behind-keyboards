@@ -335,6 +335,8 @@
 				var query = window.location.hash.split('#');
 				if (query[1]) {
 					Paper.used_words.push(query[1]);
+					var ink = new Paper.Ink;
+					Paper.stains.push(ink.spill(true));
 				}
 			});
 			
