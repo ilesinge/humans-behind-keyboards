@@ -9,7 +9,8 @@ tricks:
 - click on words
 - play with the hash in the URL
 - direct link to seed with #d=yourseed as the URL hash: http://humans.ndre.gr/#d=human+behind+keyboard
-    - use #d=yourseed&amp;b=0 to disable additional bugs 
+    - use #d=yourseed&amp;b=0 to disable additional bugs
+    - some compositions: [ooo.jpg](http://humans.ndre.gr/#d=oooooooooooooooooooooooooooooooooooooooooo.jpg), [eee+eee](http://humans.ndre.gr/#d=eeeeeeeeeeeee+eeeeeeeeeeeeeeee+eeee)
 - open as many tabs as possible and enjoy the noise (may temporarily break the toy)
 - ???
 
