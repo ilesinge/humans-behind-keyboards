@@ -31,7 +31,7 @@ $volume = 100;
 $filename = md5($text . $voice . $speed . $pitch) . '.mp3';
 $filepath = $base_dir . $filename;
 
-$cmd = "espeak -v $voice -s $speed -p $pitch -a $volume --stdout $text --punct=.,:/|\
+$cmd = "espeak -v $voice -s $speed -p $pitch -a $volume --stdout $text --punct='=.,:/'|\
 lame --silent --preset voice -q 9 --vbr-new - $filepath";
 exec($cmd);
 
