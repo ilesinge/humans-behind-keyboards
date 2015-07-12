@@ -379,11 +379,21 @@
 				$('#start').show();
 			}
 			
+			window.oldsynths = [];
+			
 			function play(url) {
 				if (window.bugs) {
 					if (window.synth) {
-						window.oldsynth = window.synth;
-						setTimeout('if (typeof(window.oldsynth.destroy) == "function") window.oldsynth.destroy()', 400);
+						window.oldsynths.push(window.synth);
+						setTimeout(function(){
+							for (key in window.oldsynths) {
+								if (typeof(window.oldsynths[key].destroy) == "function") {
+									window.oldsynths[key].destroy();
+								} else {
+									delete window.oldsynths[key];
+								}
+							}
+						}, 400);
 					}
 					try {
 						window.synth = flock.synth({
