@@ -243,7 +243,7 @@
 							setTimeout(function(highness){
 								pitch = Math.round(25 + (highness * 50));
 								speed = Math.round(90 + (highness * 180));
-								var url = 'voice.php?voice='+voice+'&pitch='+pitch+'&speed='+speed+'&text='+word;
+								var url = 'voice.php?voice='+voice+'&pitch='+pitch+'&speed='+speed+'&text='+encodeURIComponent(word);
 								new Audio(url).play();
 								play(url);
 							}, 0, this.highness);
@@ -286,7 +286,7 @@
 					//console.log('searched: '+search_expr);
 					
 					if (!nonew) {
-						var tag = '<script src="http://suggestqueries.google.com/complete/search?client=chrome&q='+search_expr+'%20&callback=Paper.suggest">\<\/script\>';
+						var tag = '<script src="http://suggestqueries.google.com/complete/search?client=chrome&q='+encodeURIComponent(search_expr)+'%20&callback=Paper.suggest">\<\/script\>';
 						$('body').append(tag);
 					}
 					var word = Paper.last_word(1);

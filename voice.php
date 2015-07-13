@@ -35,7 +35,7 @@ $filename = md5($text . $voice . $speed . $pitch) . '.mp3';
 $filepath = $base_dir . $filename;
 
 if (!file_exists($filepath)) {
-	$cmd = "espeak -v $voice -s $speed -p $pitch -a $volume --stdout $text --punct='=-*!?;<>{}[]|_.,:/' | lame --silent --preset voice -q 9 --vbr-new - $filepath";
+	$cmd = "espeak -v $voice -s $speed -p $pitch -a $volume --stdout $text --punct='=+\"-*!?;<>{}[]|_.,:/' | lame --silent --preset voice -q 9 --vbr-new - $filepath";
 	exec($cmd);
 }
 
