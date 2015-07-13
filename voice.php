@@ -1,6 +1,9 @@
 <?php
 
-$base_dir = "/tmp/";
+$base_dir = "/tmp/voice/";
+if (!is_dir($base_dir)) {
+	mkdir($base_dir);
+}
 
 // get input parameters
 $text = escapeshellarg($_GET['text']);
@@ -31,15 +34,12 @@ $volume = 100;
 $filename = md5($text . $voice . $speed . $pitch) . '.mp3';
 $filepath = $base_dir . $filename;
 
-$cmd = "espeak -v $voice -s $speed -p $pitch -a $volume --stdout $text --punct='=-*!?;<>{}[]|_.,:/'|\
-lame --silent --preset voice -q 9 --vbr-new - $filepath";
-exec($cmd);
-
-$clean_file = false;
-if (file_exists($filepath)) {
-    $clean_file = true;
+if (!file_exists($filepath)) {
+	$cmd = "espeak -v $voice -s $speed -p $pitch -a $volume --stdout $text --punct='=-*!?;<>{}[]|_.,:/' | lame --silent --preset voice -q 9 --vbr-new - $filepath";
+	exec($cmd);
 }
-else {
+
+if (!file_exists($filepath)) {
     $filepath = __DIR__."/blank.mp3";
 }
 $filesize = filesize($filepath);
@@ -48,6 +48,13 @@ header('Content-Type: audio/mpeg');
 header('Content-Length: '.$filesize);
 readfile($filepath);
 
-if ($clean_file) {
-    unlink($filepath);
+$files = glob($base_dir."*.mp3");
+$now = time();
+
+foreach ($files as $file) {
+    if (is_file($file)) {
+        if ($now - @filemtime($file) >= 60) {
+            @unlink($file);
+        }
+    }
 }
